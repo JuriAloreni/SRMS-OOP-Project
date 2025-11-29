@@ -1,0 +1,89 @@
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class FileManager {
+
+    private String fileName;
+
+    public FileManager(String fileName) {
+        this.fileName = fileName;
+    }
+
+    // Save Students to text file
+ 
+    public void saveStudents(List<Student> students) throws IOException {
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+
+            for (Student s : students) {
+
+                
+                String line = s.getYear() + "," +
+                              s.getStudentNumber() + "," +
+                              s.getGPA() + "," +
+                              s.getDepartment() + "," +
+                              s.getName() + "," +
+                              s.getID();
+
+                writer.write(line);
+                writer.newLine();
+            }
+
+        } catch (IOException e) {
+            System.out.println("Error while saving data to file!");
+            throw e; 
+        }
+    }
+
+    // Load students from file
+    public List<Student> loadStudents() throws IOException {
+
+        List<Student> students = new ArrayList<>();
+
+        File file = new File(fileName);
+
+        // If file doesn't exist, create empty file
+        if (!file.exists()) {
+            file.createNewFile();
+            return students; 
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+
+                String[] parts = line.split(",");
+
+                if (parts.length != 6) {
+                    System.out.println("Invalid line found, skipping...");
+                    continue;
+                }
+
+                try {
+                    int year = Integer.parseInt(parts[0]);
+                    int studentNumber = Integer.parseInt(parts[1]);
+                    double gpa = Double.parseDouble(parts[2]);
+                    String department = parts[3];
+                    String name = parts[4];
+                    int id = Integer.parseInt(parts[5]);
+
+                    
+                    Student s = new Student(year, studentNumber, gpa, department, name, id);
+                    students.add(s);
+
+                } catch (NumberFormatException e) {
+                    System.out.println("Error converting number (invalid data), skipping line...");
+                }
+            }
+
+        } catch (IOException e) {
+            System.out.println("Error while reading file!");
+            throw e;
+        }
+
+        return students;
+    }
+}
