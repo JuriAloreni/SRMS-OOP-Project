@@ -1,0 +1,69 @@
+import java.util.ArrayList;
+
+public class StudentRecordManager {
+
+    // List to store students in memory
+    private ArrayList<Student> students ;
+    
+    public StudentRecordManager(){
+    students= new ArrayList<>();
+    }
+   
+
+    // Add a new student to the list
+   public void addStudent(String name, int id, int year, int number, double gpa, String dept){
+    Student s = new Student(year, number, gpa, dept, name, id);
+    students.add(s);  // still using .add
+    System.out.println("Student added successfully ");
+}
+
+    // Delete student by ID
+    public void deleteStudent(int id){
+        for(Student s: students ){
+            if(s.getID()==id){
+                students.remove(s);
+                System.out.println("student deleted");
+                return;
+            }
+        }
+        System.out.println("student not found");
+    }
+
+    // Update student information
+    public void updateStudent(int id,int year,int number,double gpa,String dept,String name){
+       for(Student s: students ){
+            if(s.getID()==id) {
+            s.setYear(year);
+            s.setStudentNumber(number);
+            s.setGPA(gpa);
+            s.setDepartment(dept);
+            s.setName(name);
+            System.out.println("Student updated ");
+        } else {
+            System.out.println("Student not found ");
+        }
+    
+       }}
+    // Display all students stored in the list
+    public void displayStudents(){
+        if(students.isEmpty()){
+            System.out.println("No students found ");
+            return;
+        }
+
+        System.out.println("\n Student List ");
+        for(Student s : students){
+            System.out.println("------------------------");
+            System.out.println(s);
+        }
+    }
+
+    // Search for student by ID
+    public Student searchStudent(int id){
+        for(Student s : students){
+            if(s.getID() == id)
+                return s;
+        }
+        return null;
+    }
+}
