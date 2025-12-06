@@ -1,0 +1,83 @@
+
+
+    public static void main(String[] args) {
+
+        Scanner input = new Scanner(System.in);
+
+        StudentRecordManager manager = new StudentRecordManager();
+
+        int choice;
+
+        do{
+            System.out.println("\n Student Record Mangment System (SRMS):");
+            System.out.println("1- Add Student");
+            System.out.println("2- Update Student");
+            System.out.println("3- Delete Student");
+            System.out.println("4- Display Students");
+            System.out.println("0- Exit ");
+            System.out.print("Enter choice: ");
+            choice = input.nextInt();
+
+            switch(choice){
+
+                case 1: // Add
+                    System.out.print("Enter Name: ");
+                    input.nextLine();
+                    String name = input.nextLine();
+                    System.out.print("Enter ID: ");
+                    int id = input.nextInt();
+                    System.out.print("Enter Year: ");
+                    int year = input.nextInt();
+                    System.out.print("Enter Student Number: ");
+                    int number = input.nextInt();
+                    System.out.print("Enter GPA: ");
+                    double gpa = input.nextDouble();
+                    System.out.print("Enter Department: ");
+                    input.nextLine();
+                    String dept = input.nextLine();
+
+                    manager.addStudent(name,id,year,number,gpa,dept);
+                    break;
+
+                case 2: // Update
+                    System.out.print("Enter Student ID To Update: ");
+                    int uid = input.nextInt();
+                    System.out.print("New Name: ");
+                    input.nextLine();
+                    String newName = input.nextLine();
+                    System.out.print("New Year: ");
+                    int newYear = input.nextInt();
+                    System.out.print("New Student Number: ");
+                    int newNum = input.nextInt();
+                    System.out.print("New GPA: ");
+                    double newGpa = input.nextDouble();
+                    System.out.print("New Department: ");
+                    input.nextLine();
+                    String newDept = input.nextLine();
+
+                    manager.updateStudent(uid,newYear,newNum,newGpa,newDept,newName);
+                    break;
+
+                case 3: // Delete
+                    System.out.print("Enter Student ID To Delete: ");
+                    int delet = input.nextInt();
+                    manager.deleteStudent(delet);
+                    break;
+
+                case 4:
+                    manager.displayStudents();
+                    break;
+
+                case 0:
+                    System.out.println("Exiting System ...");
+                    break;
+
+                default:
+                    System.out.println("Invalid Choice ");
+            }
+
+        }while(choice != 0);
+    }
+
+    
+}
