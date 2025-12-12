@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class AutoSave extends Thread {
 
     private final StudentRecordManager manager;
