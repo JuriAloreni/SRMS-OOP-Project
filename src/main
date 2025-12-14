@@ -1,83 +1,143 @@
+import java.io.IOException;
+import java.util.List;
+import java.util.Scanner;
+import java.util.ArrayList;
 
+public class Main {
 
     public static void main(String[] args) {
-
         Scanner input = new Scanner(System.in);
 
         StudentRecordManager manager = new StudentRecordManager();
 
+        // 1) File Management: load at start
+        FileManager file = new FileManager("students.txt");
+        try { 
+           
+         List<Student> loaded = file.loadStudents();
+
+
+manager.setStudents(new ArrayList<>(loaded));
+            
+      
+//            manager.setStudents(loaded);
+
+            System.out.println("Loaded students: " + loaded.size());
+        } catch (IOException e) {
+            System.out.println("Could not load students file. Starting with empty list.");
+        }
+
+        // 2) Multithreading: AutoSave
+        AutoSave auto = new AutoSave(manager,"students.txt", 60); 
+        auto.start();
+
         int choice;
 
-        do{
-            System.out.println("\n Student Record Mangment System (SRMS):");
+        do {
+            System.out.println("\nStudent Record Management System (SRMS):");
             System.out.println("1- Add Student");
             System.out.println("2- Update Student");
             System.out.println("3- Delete Student");
             System.out.println("4- Display Students");
-            System.out.println("0- Exit ");
-            System.out.print("Enter choice: ");
-            choice = input.nextInt();
+            System.out.println("5- Generate Report");
+            System.out.println("0- Exit");
 
-            switch(choice){
+            choice = readInt(input, "Enter choice: ");
 
-                case 1: // Add
-                    System.out.print("Enter Name: ");
-                    input.nextLine();
-                    String name = input.nextLine();
-                    System.out.print("Enter ID: ");
-                    int id = input.nextInt();
-                    System.out.print("Enter Year: ");
-                    int year = input.nextInt();
-                    System.out.print("Enter Student Number: ");
-                    int number = input.nextInt();
-                    System.out.print("Enter GPA: ");
-                    double gpa = input.nextDouble();
-                    System.out.print("Enter Department: ");
-                    input.nextLine();
-                    String dept = input.nextLine();
-
-                    manager.addStudent(name,id,year,number,gpa,dept);
+            switch (choice) {
+                case 1: {
+                    String name = readLine(input, "Enter Name: ");
+                    int id = readInt(input, "Enter ID: ");
+                    int year = readInt(input, "Enter Year: ");
+                    int number = readInt(input, "Enter Student Number: ");
+                    double gpa = readDouble(input, "Enter GPA: ");
+                    String dept = readLine(input, "Enter Department: ");
+                    manager.addStudent(name, id, year, number, gpa, dept);
                     break;
+                }
 
-                case 2: // Update
-                    System.out.print("Enter Student ID To Update: ");
-                    int uid = input.nextInt();
-                    System.out.print("New Name: ");
-                    input.nextLine();
-                    String newName = input.nextLine();
-                    System.out.print("New Year: ");
-                    int newYear = input.nextInt();
-                    System.out.print("New Student Number: ");
-                    int newNum = input.nextInt();
-                    System.out.print("New GPA: ");
-                    double newGpa = input.nextDouble();
-                    System.out.print("New Department: ");
-                    input.nextLine();
-                    String newDept = input.nextLine();
-
-                    manager.updateStudent(uid,newYear,newNum,newGpa,newDept,newName);
+                case 2: {
+                    int uid = readInt(input, "Enter Student ID To Update: ");
+                    String newName = readLine(input, "New Name: ");
+                    int newYear = readInt(input, "New Year: ");
+                    int newNum = readInt(input, "New Student Number: ");
+                    double newGpa = readDouble(input, "New GPA: ");
+                    String newDept = readLine(input, "New Department: ");
+                    manager.updateStudent(uid, newYear, newNum, newGpa, newDept, newName);
                     break;
+                }
 
-                case 3: // Delete
-                    System.out.print("Enter Student ID To Delete: ");
-                    int delet = input.nextInt();
-                    manager.deleteStudent(delet);
+                case 3: {
+                    int did = readInt(input, "Enter Student ID To Delete: ");
+                    manager.deleteStudent(did);
                     break;
+                }
 
                 case 4:
                     manager.displayStudents();
                     break;
 
+                // 1) Report
+                case 5:
+                    ReportGeneroter.generateReport(manager, "report.txt");
+                    break;
+
                 case 0:
-                    System.out.println("Exiting System ...");
+                    System.out.println("Exiting System... Saving data...");
+
+                    // save before exit
+                    try {
+                        file.saveStudents(manager.getStudents());
+                        System.out.println("Saved successfully.");
+                    } catch (IOException e) {
+                        System.out.println("Save failed: " + e.getMessage());
+                    }
+
+                    // stop autosave
+                    auto.stopautosave(); 
                     break;
 
                 default:
-                    System.out.println("Invalid Choice ");
+                    System.out.println("Invalid Choice");
             }
 
-        }while(choice != 0);
+        } while (choice != 0);
+
+        input.close();
     }
 
-    
+    // Exception Handling: safe input helpers
+    private static int readInt(Scanner input, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String line = input.nextLine().trim();
+            try {
+                return Integer.parseInt(line);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid integer.");
+            }
+        }
+    }
+
+    private static double readDouble(Scanner input, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String line = input.nextLine().trim();
+            try {
+                return Double.parseDouble(line);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+            }
+        }
+    }
+
+    private static String readLine(Scanner input, String prompt) {
+        System.out.print(prompt);
+        String line = input.nextLine();
+        while (line.trim().isEmpty()) {
+            System.out.print("Cannot be empty. " + prompt);
+            line = input.nextLine();
+        }
+        return line.trim();
+    }
 }
