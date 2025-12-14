@@ -1,39 +1,39 @@
 import java.util.ArrayList;
-
 public class AutoSave extends Thread {
 
     private final StudentRecordManager manager;
-    private final String fileName;
+    private final FileManager fileManager;
     private final int interval;
-    private  boolean running = true;
+    private boolean running = true;
 
     public AutoSave(StudentRecordManager manager, String fileName, int intervalSeconds) {
         this.manager = manager;
-        this.fileName = fileName;
-        this.interval = intervalSeconds * 1000;//convert from seconds to milliseconds
+        this.fileManager = new FileManager(fileName);
+        this.interval = intervalSeconds * 1000;
+        setDaemon(true);
     }
-//method to stop autosave 
+
     public void stopautosave() {
         running = false;
+        interrupt();
     }
 
     @Override
     public void run() {
-
         while (running) {
             try {
-                FileManager.saveReport(new ArrayList<>(manager.getStudents()), fileName);
+                fileManager.saveStudents(manager.getStudents());
                 System.out.println("AutoSave done!");
-
                 Thread.sleep(interval);
-//specific catch 
+
             } catch (InterruptedException e) {
                 System.out.println("AutoSave stopped.");
                 return;
-//generic catch
+
             } catch (Exception e) {
-                System.out.println("Error: " + e.getMessage());
+                System.out.println("AutoSave error: " + e.getMessage());
             }
         }
     }
 }
+
