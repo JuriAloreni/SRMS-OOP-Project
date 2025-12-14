@@ -20,7 +20,7 @@ public class Main {
 manager.setStudents(new ArrayList<>(loaded));
             
       
-//            manager.setStudents(loaded);
+
 
             System.out.println("Loaded students: " + loaded.size());
         } catch (IOException e) {
