@@ -1,14 +1,21 @@
 import java.util.ArrayList;
-
 public class StudentRecordManager {
-
-    // List to store students in memory
+    
+   // List to store students in memory
     private ArrayList<Student> students ;
     
     public StudentRecordManager(){
     students= new ArrayList<>();
     }
    
+    public ArrayList<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(ArrayList<Student> students) {
+        this.students = students;
+    }
+    
 
     // Add a new student to the list
    public void addStudent(String name, int id, int year, int number, double gpa, String dept){
