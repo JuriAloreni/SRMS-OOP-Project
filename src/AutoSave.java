@@ -30,7 +30,7 @@ public class AutoSave extends Thread {
                 System.out.println("AutoSave stopped.");
                 return;
 
-            } catch (Exception e) {
+            } catch (IOException e) {
                 System.out.println("AutoSave error: " + e.getMessage());
             }
         }
