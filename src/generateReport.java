@@ -2,10 +2,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-
-
 public class ReportGeneroter {
-
+ 
     public static void generateReport(StudentRecordManager manager, String fileName)  {
         
 ArrayList<Student> students = new ArrayList<>(manager.getStudents());
