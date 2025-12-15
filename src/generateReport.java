@@ -8,7 +8,7 @@ public class ReportGeneroter {
         
 ArrayList<Student> students = new ArrayList<>(manager.getStudents());
 
-    try (FileWriter writer = new FileWriter(fileName)) {
+    try (FileWriter writer = new FileWriter(fileName)){
 
     String report=("--- Report for studunt by GPA and department---\n\n");
             //print file path
