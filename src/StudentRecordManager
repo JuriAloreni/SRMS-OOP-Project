@@ -7,7 +7,7 @@ public class StudentRecordManager {
     public StudentRecordManager(){
     students= new ArrayList<>();
     }
-   
+   //add by jory
     public ArrayList<Student> getStudents() {
         return students;
     }
