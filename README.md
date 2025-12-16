@@ -20,10 +20,15 @@ The Student Record Management System (SRMS) is a Java-based console application 
 - File Handling
 - GitHub
 
-## How to Run
-1. Open the project in a Java IDE (NetBeans, IntelliJ, or VS Code).
-2. Compile and run the `Main` class.
-3. Follow the on-screen menu instructions.
+## How to Run (Command Line)
+
+1. Extract the project ZIP file.
+2. Open a terminal or command prompt.
+3. Navigate to the source directory.
+4. Compile the program:
+   javac *.java
+5. Run the application:
+   java Main
 
 ## Team Members
 - Juri Aloreni
